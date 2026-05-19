@@ -1,0 +1,22 @@
+{
+  "name": "IIMROH Dashboard",
+  "short_name": "IIMROH",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f4f0",
+  "theme_color": "#1a1a18",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23a3e635'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%233b5bdb'/><stop offset='100%' stop-color='%234c6ef5'/></linearGradient></defs><rect width='256' height='256' rx='52' fill='url(%23g)'/><text x='50%' y='54%' text-anchor='middle' font-size='108' font-family='Arial,sans-serif' font-weight='700' fill='white'>R</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
