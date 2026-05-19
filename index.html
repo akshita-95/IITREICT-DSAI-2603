@@ -674,7 +674,7 @@
       <div class="prog-banner-title" id="students-banner-title">Advanced Digital Marketing &amp; AI Strategies</div>
       <div class="prog-banner-sub"   id="students-banner-sub">IIM Rohtak · DM Cohort 2026</div>
     </div>
-    <a class="sheet-btn" id="sheet-link" href="https://docs.google.com/spreadsheets/d/1gOLk9kaPKpxhCQcpVnsdM3KD7p-EyyZZ-zSIs4PmNRo/edit" target="_blank" rel="noopener">↗ Open Master Sheet</a>
+    <a class="sheet-btn" id="sheet-link" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR3yRzBrrekz5925F-qSp0UdOIiytI4ox_mE_bPg42rOWSWyiBqJaa7MjhjH7jeEjnOblo_rcgexpcJ/pub" target="_blank" rel="noopener">↗ Open Master Sheet</a>
   </div>
 
   <div class="filter-bar">
@@ -1476,24 +1476,32 @@
 
 <script>
 // ══════════════════════════════════════════════════
+//  SHARED GOOGLE SHEET (published CSV — all tabs read this)
+// ══════════════════════════════════════════════════
+const SHARED_DATA_CSV =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR3yRzBrrekz5925F-qSp0UdOIiytI4ox_mE_bPg42rOWSWyiBqJaa7MjhjH7jeEjnOblo_rcgexpcJ/pub?gid=1986899323&single=true&output=csv';
+const SHARED_SHEET_VIEW =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR3yRzBrrekz5925F-qSp0UdOIiytI4ox_mE_bPg42rOWSWyiBqJaa7MjhjH7jeEjnOblo_rcgexpcJ/pub';
+
+// ══════════════════════════════════════════════════
 //  MASTER DATA TAB  — full-field vertical card view
 //  One shared CSV, 2 rows (DM row + PM row)
 //  Each tab shows only its own batch row, all 105 fields
 // ══════════════════════════════════════════════════
 const MD_URLS = {
   // Both programs live in the SAME sheet/CSV — one row per batch
-  shared_csv: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQa8oYOzwOfzeJnLPV8tjnl5OfaG5uFFa0UdlzSBdcwyyEa7z3FLXFuOVNgqiR0AmZEiC6vAyOBxfsI/pub?gid=1420002870&single=true&output=csv',
+  shared_csv: SHARED_DATA_CSV,
   dm: {
-    sheet:      'https://docs.google.com/spreadsheets/d/1gOLk9kaPKpxhCQcpVnsdM3KD7p-EyyZZ-zSIs4PmNRo/edit',
-    sheetMaster:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQa8oYOzwOfzeJnLPV8tjnl5OfaG5uFFa0UdlzSBdcwyyEa7z3FLXFuOVNgqiR0AmZEiC6vAyOBxfsI/pub',
+    sheet:      SHARED_SHEET_VIEW,
+    sheetMaster:SHARED_SHEET_VIEW,
     batchMatch: ['iimroh-dmai','dmai','dm'],
     label:      'IIMROH-DMAI-2603',
     name:       'Advanced Digital Marketing & AI Strategies',
     bannerClass:'dm', tag:'DM', accentColor:'var(--blue)',
   },
   pm: {
-    sheet:      'https://docs.google.com/spreadsheets/d/1PQ805ah3nix7DOM53_Ai0VP5r1bDXsUiSsug0tog6zA/edit',
-    sheetMaster:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQa8oYOzwOfzeJnLPV8tjnl5OfaG5uFFa0UdlzSBdcwyyEa7z3FLXFuOVNgqiR0AmZEiC6vAyOBxfsI/pub',
+    sheet:      SHARED_SHEET_VIEW,
+    sheetMaster:SHARED_SHEET_VIEW,
     batchMatch: ['iimroh-pmgm','pmgm','pm ai','pm'],
     label:      'IIMROH-PMGM-2603',
     name:       'AI-Powered Product Management & Growth Marketing',
@@ -1813,8 +1821,8 @@ function mdShowGroup(g)      { mdSetSection(g === 'all' ? 'all' : g); }
 
 <script>
 const DATALOG_URLS = {
-  dm: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRl9WPf2Vx3p-3cz3h7SfnKTX5F40tBLlmeXgGafeZaJuklj4nlX19Nh8kFaHZTfE98EuLXEFWNsCZn/pub?gid=70561146&single=true&output=csv',
-  pm: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQa8oYOzwOfzeJnLPV8tjnl5OfaG5uFFa0UdlzSBdcwyyEa7z3FLXFuOVNgqiR0AmZEiC6vAyOBxfsI/pub?gid=70561146&single=true&output=csv',
+  dm: SHARED_DATA_CSV,
+  pm: SHARED_DATA_CSV,
 };
 
 let DL_RAW      = [];  // raw parsed rows
@@ -1887,7 +1895,7 @@ async function loadDatalog() {
   const url = DATALOG_URLS[currentProg];
   try {
     const text = await fetchCSV(url);
-    const rows = parseCSV(text);
+    const rows = filterCsvRowsByProgram(parseCSV(text), currentProg);
 
     // Show debug info if sheet seems empty or has only 1 row
     if (rows.length < 2) {
@@ -2324,12 +2332,13 @@ const PROG_CONFIG = {
     fullName: 'Advanced Digital Marketing & AI Strategies',
     institution: 'IIM Rohtak · DM Cohort 2026',
     color: '#1d4ed8', bannerClass: 'dm',
-    sheetViewUrl:  'https://docs.google.com/spreadsheets/d/1gOLk9kaPKpxhCQcpVnsdM3KD7p-EyyZZ-zSIs4PmNRo/edit',
-    calViewUrl:    'https://docs.google.com/spreadsheets/d/1S_ocTOJtcwgvZf800bKEAypNzZs0iNNwhvDszqsn_SQ/edit?gid=89700084',
+    batchMatch: ['iimroh-dmai', 'dmai', 'dm'],
+    sheetViewUrl:  SHARED_SHEET_VIEW,
+    calViewUrl:    SHARED_SHEET_VIEW,
     gradingDocUrl: 'https://docs.google.com/document/d/1AaWmL0Sg7f-qjngsWEaIxDm2C8U0Pqtt/edit',
     roadmapUrl: 'https://drive.google.com/file/d/1m8JQn8umFi6_IpHPowOGZsJIAFjA-bHL/preview',
-    studentSheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRl9WPf2Vx3p-3cz3h7SfnKTX5F40tBLlmeXgGafeZaJuklj4nlX19Nh8kFaHZTfE98EuLXEFWNsCZn/pub?gid=0&single=true&output=csv',
-    calSheetUrl:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0WR0axjp_GCJsm66wqgzy4Mel1RoOnDNNBmmfZOGVAszjEhdYM2gJquUhX89_sV1QPQF82NAadlIf/pub?gid=89700084&single=true&output=csv',
+    studentSheetUrl: SHARED_DATA_CSV,
+    calSheetUrl:     SHARED_DATA_CSV,
     calTitle: 'Program Calendar — DM',
     calSubtitle: 'Advanced Digital Marketing & AI Strategies Certification',
     gradingSubtitle: 'IIM Rohtak · Advanced Digital Marketing & AI Strategies Certification',
@@ -2349,17 +2358,17 @@ const PROG_CONFIG = {
     fullName: 'AI-Powered Product Management & Growth Marketing',
     institution: 'IIM Rohtak · PM Cohort 2026',
     color: '#0d9488', bannerClass: 'pm',
-    sheetViewUrl:  'https://docs.google.com/spreadsheets/d/1PQ805ah3nix7DOM53_Ai0VP5r1bDXsUiSsug0tog6zA/edit',
-    calViewUrl:    'https://docs.google.com/spreadsheets/d/1S_ocTOJtcwgvZf800bKEAypNzZs0iNNwhvDszqsn_SQ/edit?gid=0',
+    batchMatch: ['iimroh-pmgm', 'pmgm', 'pm ai', 'pm'],
+    sheetViewUrl:  SHARED_SHEET_VIEW,
+    calViewUrl:    SHARED_SHEET_VIEW,
     gradingDocUrl: 'https://docs.google.com/document/d/1qLQwg8e69A30sqLCHFE5nxOu9-7Q7ctA/edit',
     roadmapUrl: 'https://drive.google.com/file/d/1fh-v5RgLVHbTIZ7yab2heAGjWO_-Y_Am/preview',
-    studentSheetUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQa8oYOzwOfzeJnLPV8tjnl5OfaG5uFFa0UdlzSBdcwyyEa7z3FLXFuOVNgqiR0AmZEiC6vAyOBxfsI/pub?gid=0&single=true&output=csv',
-    calSheetUrl:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0WR0axjp_GCJsm66wqgzy4Mel1RoOnDNNBmmfZOGVAszjEhdYM2gJquUhX89_sV1QPQF82NAadlIf/pub?gid=0&single=true&output=csv',
+    studentSheetUrl: SHARED_DATA_CSV,
+    calSheetUrl:     SHARED_DATA_CSV,
     calTitle: 'Program Calendar — PM',
     calSubtitle: 'AI-Powered Product Management & Growth Marketing Program',
     gradingSubtitle: 'IIM Rohtak · AI-Powered Product Management & Growth Marketing Program',
     certText: 'Students who complete all evaluation components and meet the minimum score thresholds will be awarded the IIM Rohtak AI-Powered Product Management & Growth Marketing Program Certification.',
-    pmColMap: { code:0, name:1, email:2, mobile:3, payment:4, week:6, zoom:11, lms:12 },
     gradeComponents: [
       { name:'Module 1 Evaluation', weight:10, score:8 },
       { name:'Module 2 Evaluation', weight:10, score:7 },
@@ -2536,6 +2545,41 @@ function parseCSV(text) {
   return rows.filter(r=>r.some(c=>c.length>0));
 }
 
+function findCsvHeaderRow(rows) {
+  for (let i = 0; i < Math.min(rows.length, 12); i++) {
+    const letterCells = rows[i].filter(c => /[a-zA-Z_]/.test(c) && String(c).trim().length >= 2).length;
+    if (letterCells >= 3) return i;
+  }
+  return 0;
+}
+
+function getProgramBatchMatchers(prog) {
+  const cfg = PROG_CONFIG && PROG_CONFIG[prog];
+  if (cfg && cfg.batchMatch) return cfg.batchMatch;
+  const md = MD_URLS && MD_URLS[prog];
+  if (md && md.batchMatch) return md.batchMatch;
+  return prog === 'pm' ? ['iimroh-pmgm', 'pmgm', 'pm ai', 'pm'] : ['iimroh-dmai', 'dmai', 'dm'];
+}
+
+/** When DM + PM share one published CSV, keep only rows for the active program. */
+function filterCsvRowsByProgram(rows, prog) {
+  if (!rows || !rows.length) return rows || [];
+  const matchers = getProgramBatchMatchers(prog);
+  const hdrIdx = findCsvHeaderRow(rows);
+  const hdr = rows[hdrIdx].map(h => String(h || '').toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const batchCol = hdr.findIndex(h =>
+    h === 'batchname' || h === 'batch' || h === 'batchid' || h === 'program' || h === 'cohort' || h === 'prog'
+  );
+  if (batchCol < 0) return rows;
+  const header = rows[hdrIdx];
+  const filtered = [header];
+  rows.slice(hdrIdx + 1).forEach(r => {
+    const v = String(r[batchCol] || '').toLowerCase();
+    if (matchers.some(kw => v.includes(kw))) filtered.push(r);
+  });
+  return filtered.length > 1 ? filtered : rows;
+}
+
 function parseBool(v) {
   if(v===null||v===undefined) return false;
   const s=v.toString().trim().toLowerCase();
@@ -2569,7 +2613,7 @@ async function mailLoadStudentDirectory() {
   await Promise.all(programs.map(async (prog) => {
     const cfg = PROG_CONFIG[prog];
     try {
-      const rows = parseCSV(await fetchCSV(cfg.studentSheetUrl));
+      const rows = filterCsvRowsByProgram(parseCSV(await fetchCSV(cfg.studentSheetUrl)), prog);
       const students = extractStudentRows(rows, cfg);
       students.forEach(s => {
         MAIL_STATE.studentDirectory.set(s.email, {
@@ -3784,7 +3828,7 @@ async function loadStudentData() {
   ['s-total','s-paid','s-drop','s-disb','s-zoom','s-lms'].forEach(id=>document.getElementById(id).textContent='…');
   const cfg=PROG_CONFIG[currentProg];
   try {
-    const rows=parseCSV(await fetchCSV(cfg.studentSheetUrl));
+    const rows=filterCsvRowsByProgram(parseCSV(await fetchCSV(cfg.studentSheetUrl)), currentProg);
     if(rows.length<2) throw new Error('Sheet appears empty');
     let iCode,iName,iEmail,iMob,iPay,iWeek,iZoom,iLms,dataStart;
 
@@ -4498,7 +4542,7 @@ async function loadCalData(){
   renderUpcomingWidget([]);
   try{
     const url = PROG_CONFIG[currentProg].calSheetUrl;
-    const rows = parseCSV(await fetchCSV(url));
+    const rows = filterCsvRowsByProgram(parseCSV(await fetchCSV(url)), currentProg);
     if(rows.length < 2) throw new Error('Sheet is empty or has only one row');
 
     // ── Smart column detection ──────────────────────────────────────────────
@@ -4943,9 +4987,11 @@ function renderRoadmap() {
 function refreshAll(){
   // Bust cache for current data sources on explicit refresh
   const cfg = PROG_CONFIG[currentProg];
+  delete _csvCache[SHARED_DATA_CSV];
   delete _csvCache[cfg.studentSheetUrl];
   delete _csvCache[cfg.calSheetUrl];
   delete _csvCache[DATALOG_URLS[currentProg]];
+  delete _csvCache[MD_URLS.shared_csv];
   loadStudentData();
   if(currentTab==='calendar') loadCalData();
   if(currentTab==='mail' && MAIL_STATE.signedIn) mailLoadThreads();
@@ -5857,7 +5903,7 @@ async function waFetchStudents(prog) {
   if (statusEl) statusEl.textContent = '⏳ Loading student data...';
 
   try {
-    const rows = parseCSV(await fetchCSV(cfg.studentSheetUrl));
+    const rows = filterCsvRowsByProgram(parseCSV(await fetchCSV(cfg.studentSheetUrl)), prog);
     if (rows.length < 2) throw new Error('Empty');
     let iName, iMob, iPay, dataStart;
 

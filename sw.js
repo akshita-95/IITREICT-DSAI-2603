@@ -1,4 +1,4 @@
-const CACHE_NAME = 'iimroh-static-v3';
+const CACHE_NAME = 'iimroh-static-v4';
 const CORE_ASSETS = ['/', './index.html', './dashboard-fx.css', './manifest.json', './cursor.js', './robot-bg.js', './ribbon-bg.js'];
 
 self.addEventListener('install', (event) => {
